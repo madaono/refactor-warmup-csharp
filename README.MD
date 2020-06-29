@@ -49,8 +49,8 @@ TW工程师接收后，却发现代码存在神一般的命名和谜一般的逻
 #### 练功要求
 1. 重构前运行测试，确保测试是通过的
 2. 每修改一处代码，运行测试，确保测试是通过的，并做一次Commit，Commit信息描述你认为的代码坏味道和重构手法
-3. 产品代码位于`src/main`下的`cc.xpbootcamp.warmup.cashier`package中
-4. 测试代码位于`src/test`下的`cc.xpbootcamp.warmup.cashier`package中
+3. 产品代码位于`refactor-gym-warmup`下的`Cashier`文件夹中
+4. 测试代码位于`refactor-gym-warmup-test`下的`Cashier`文件夹中
 5. 不要修改测试代码
 6. 尽自己所能，尽可能多的找出坏味道，并重构掉
 
