@@ -13,6 +13,8 @@ namespace refactor_gym_warmup_2020.cashier
     {
         private Order order;
         private double _rate = .10;
+        private double _totSalesTx = 0d;
+        private double _totAmount = 0d;
 
         public OrderReceipt(Order order)
         {
@@ -24,74 +26,40 @@ namespace refactor_gym_warmup_2020.cashier
             StringBuilder output = new StringBuilder();
 
             // print headers
-            AppendHeaders(output);
-
             // print date, bill no, customer name
-//        output.Append("Date - " + order.getDate();
-            AppendBillInfo(output);
-//        output.Append(order.getCustomerLoyaltyNumber());
+            output.AppendHeader()
+                .AppendBillInfo(order);
 
             // prints lineItems
 
-            double totSalesTx = 0d;
-
-            double tot = 0d;
-
             foreach (LineItem lineItem in order.GetLineItems())
             {
-                AppendBillContent(output, lineItem);
+                output.AppendBillContent(lineItem);
 
                 // calculate sales tax @ rate of 10%
-                double salesTax = lineItem.TotalAmount() * _rate;
-                totSalesTx += salesTax;
+                AddTotalSalesTax(lineItem);
 
                 // calculate total amount of lineItem = price * quantity + 10 % sales tax
-                tot += lineItem.TotalAmount() + salesTax;
+                AddTotalSalesAmount(lineItem);
             }
 
             // prints the state tax
-            AppendStateTax(output, totSalesTx);
+            output.AppendStateTax(_totSalesTx);
 
             // print total amount
-            AppendTotalAmount(output, tot);
+            output.AppendTotalAmount(_totAmount);
             return output.ToString();
         }
 
-        private static void AppendTotalAmount(StringBuilder output, double tot)
+        private void AddTotalSalesTax(LineItem item)
         {
-            output.Append("Total Amount")
-                .Append('\t')
-                .Append(tot);
+            _totSalesTx += item.TotalAmount() * _rate;
         }
 
-        private static void AppendStateTax(StringBuilder output, double totSalesTx)
+        private void AddTotalSalesAmount(LineItem item)
         {
-            output.Append("Sales Tax")
-                .Append('\t')
-                .Append(totSalesTx);
-        }
-
-        private static void AppendBillContent(StringBuilder output, LineItem lineItem)
-        {
-            output.Append(lineItem.GetDescription());
-            output.Append('\t');
-            output.Append(lineItem.GetPrice());
-            output.Append('\t');
-            output.Append(lineItem.GetQuantity());
-            output.Append('\t');
-            output.Append(lineItem.TotalAmount());
-            output.Append('\n');
-        }
-
-        private void AppendBillInfo(StringBuilder output)
-        {
-            output.Append(order.GetCustomerName());
-            output.Append(order.GetCustomerAddress());
-        }
-
-        private static StringBuilder AppendHeaders(StringBuilder output)
-        {
-            return output.Append("======Printing Orders======\n");
+            double salesTax = item.TotalAmount() * _rate;
+            _totAmount += item.TotalAmount() + salesTax;
         }
     }
 }
